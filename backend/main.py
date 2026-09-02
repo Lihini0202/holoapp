@@ -46,7 +46,7 @@ app = FastAPI()
 def home():
     return {
         "status": "Online",
-        "message": "Holo Backend is Running!",
+        "message": "Ghost Guard backend is running",
         "docs_url": "/docs"
     }
 

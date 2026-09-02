@@ -159,7 +159,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> with TickerProvid
                   // Version Info
                   Center(
                     child: Text(
-                      "HoloLove v1.0.0 (Research Edition)\n© 2025",
+                      "Ghost Guard v1.0.0 (Research Edition)\n© 2025",
                       textAlign: TextAlign.center,
                       style: GoogleFonts.poppins(color: colTextMain.withValues(alpha: 0.4), fontSize: 12),
                     ),

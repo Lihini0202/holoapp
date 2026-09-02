@@ -1,11 +1,11 @@
 {
-    "name": "dating_risk_app",
-    "short_name": "dating_risk_app",
+    "name": "Ghost Guard",
+    "short_name": "Ghost Guard",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Reads a dating-app conversation and reports whether the other person is showing signs of disengaging.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

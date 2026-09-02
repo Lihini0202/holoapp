@@ -268,7 +268,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                                   ).createShader(bounds);
                                 },
                                 child: Text(
-                                  "GhostGuard",
+                                  "Ghost Guard",
                                   style: GoogleFonts.inter(
                                     fontSize: 42,
                                     fontWeight: FontWeight.w900,

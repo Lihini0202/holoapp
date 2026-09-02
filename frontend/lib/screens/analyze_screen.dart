@@ -264,7 +264,7 @@ class _AnalyzeScreenState extends State<AnalyzeScreen> with TickerProviderStateM
           shaderCallback: (bounds) => LinearGradient(
             colors: [colPinkDeep, Colors.purpleAccent],
           ).createShader(bounds),
-          child: Text("HoloLove", style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.white)),
+          child: Text("Ghost Guard", style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.white)),
         ),
         backgroundColor: Colors.transparent, 
         elevation: 0, 

@@ -278,7 +278,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                                 ],
                               ).createShader(bounds),
                               child: Text(
-                                "GhostGuard",
+                                "Ghost Guard",
                                 style: GoogleFonts.inter(
                                   fontSize: 34,
                                   fontWeight: FontWeight.w900,

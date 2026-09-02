@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'HoloLove',
+      title: 'Ghost Guard',
       debugShowCheckedModeBanner: false,
       theme: _buildTheme(),
       // Applied in the builder rather than around `home`, so it covers every
