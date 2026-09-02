@@ -1,8 +1,12 @@
-schemaVersion: 1.0
+# Choreo component descriptor, schema 1.1. nginx serves the built Flutter bundle
+# on 8080; Choreo disallows binding privileged ports as a non-root user.
+schemaVersion: 1.1
 endpoints:
   - name: holo-web
-    port: 8080
+    displayName: Holo Web Client
+    service:
+      basePath: /
+      port: 8080
     type: HTTP
     networkVisibilities:
       - Public
-    context: /

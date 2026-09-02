@@ -1,8 +1,12 @@
-schemaVersion: 1.0
+# Choreo component descriptor, schema 1.1. The port lives under `service`; the
+# flat `port` field of schema 1.0 is no longer accepted.
+schemaVersion: 1.1
 endpoints:
   - name: holo-api
-    port: 8000
+    displayName: Holo Analysis API
+    service:
+      basePath: /
+      port: 8000
     type: REST
     networkVisibilities:
       - Public
-    context: /
