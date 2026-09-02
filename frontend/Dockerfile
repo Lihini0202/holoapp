@@ -7,7 +7,10 @@
 # A prebuilt SDK image is used rather than cloning flutter/flutter. Cloning pulls
 # roughly 200 MB and then downloads the Dart and web SDKs separately, which makes
 # every build slow and dependent on three network fetches succeeding.
-FROM ghcr.io/cirruslabs/flutter:3.35.0 AS build
+# Pinned to the version that builds this project locally. The image must ship a
+# Dart SDK satisfying the constraint in pubspec.yaml (^3.10.0); Flutter 3.35 ships
+# Dart 3.9 and fails dependency resolution.
+FROM ghcr.io/cirruslabs/flutter:3.38.1 AS build
 
 WORKDIR /app
 
