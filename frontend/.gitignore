@@ -1,0 +1,29 @@
+# --- Secrets -----------------------------------------------------------------
+# .env is bundled as a Flutter asset, so it must hold only public keys. It is
+# still not committed: the deployment platform supplies the values at build time.
+.env
+.env.*
+!.env.example
+
+# --- Build output ------------------------------------------------------------
+build/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+
+# --- Platform ----------------------------------------------------------------
+ios/Pods/
+ios/.symlinks/
+android/.gradle/
+android/local.properties
+android/key.properties
+*.jks
+
+# --- Editors and OS ----------------------------------------------------------
+.idea/
+.vscode/
+*.iml
+*.swp
+.DS_Store
+Thumbs.db

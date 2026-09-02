@@ -1,0 +1,8 @@
+schemaVersion: 1.0
+endpoints:
+  - name: holo-web
+    port: 8080
+    type: HTTP
+    networkVisibilities:
+      - Public
+    context: /

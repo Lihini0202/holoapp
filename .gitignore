@@ -1,0 +1,43 @@
+# --- Secrets -----------------------------------------------------------------
+# .env holds the service_role key on the backend and is never committed. The
+# frontend .env carries only publishable values but is still supplied by the
+# deployment platform rather than the repository.
+.env
+.env.*
+!.env.example
+service_account.json
+test_accounts.json
+
+# --- Local diagnostic scripts ------------------------------------------------
+backend/check_db.py
+backend/debug_supabase.py
+
+# --- Research artefacts ------------------------------------------------------
+datasets/
+*.ipynb
+*.docx
+
+# --- Python ------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+
+# --- Flutter -----------------------------------------------------------------
+frontend/build/
+frontend/.dart_tool/
+frontend/.flutter-plugins
+frontend/.flutter-plugins-dependencies
+frontend/ios/Pods/
+frontend/android/.gradle/
+frontend/android/local.properties
+frontend/android/.kotlin/
+
+# --- Editors and OS ----------------------------------------------------------
+.idea/
+.vscode/
+*.iml
+*.swp
+.DS_Store
+Thumbs.db
+*.bak

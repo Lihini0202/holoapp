@@ -1,0 +1,40 @@
+name: dating_risk_app
+description: "A new Flutter project."
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  introduction_screen: ^3.1.12
+  shared_preferences: ^2.2.2
+  cupertino_icons: ^1.0.8
+  http: ^1.6.0
+  image_picker: ^1.2.1
+  supabase_flutter: ^2.10.3
+  fl_chart: ^1.1.1
+  google_fonts: ^6.3.2
+  intl: ^0.20.2
+  flutter_dotenv: ^6.0.0
+  google_sign_in: ^6.1.0
+  # CHANGED: Updated from ^5.0.0 to ^7.1.1 to fix the http conflict
+  flutter_facebook_auth: ^7.1.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  
+  # Consolidate all assets here
+  assets:
+    - assets/holo.png
+    - assets/dating.png
+    - assets/holo_designer.png
+    - .env
