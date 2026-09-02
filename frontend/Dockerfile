@@ -34,7 +34,12 @@ RUN printf 'SUPABASE_URL=%s\nSUPABASE_ANON_KEY=%s\nBACKEND_URL=%s\n' \
 RUN flutter build web --release
 
 # --- Serve -------------------------------------------------------------------
-FROM nginx:1.27-alpine
+# nginx 1.27-alpine ships OpenSSL 3.3.3, which Trivy flags for CVE-2026-31789.
+# 1.29-alpine carries 3.5.6, above the 3.3.7 fix. The apk upgrade catches patches
+# released after this tag was published, since the image is scanned on every build.
+FROM nginx:1.29-alpine
+
+RUN apk upgrade --no-cache
 
 COPY --from=build /app/build/web /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
