@@ -1,3 +1,15 @@
+# Versions are pinned to those the deployed model was trained with. Loading a
+# model under a different scikit-learn build is unsupported and can fail on the
+# compiled extensions, or worse, load and behave differently.
+#
+# scikit-learn 1.9 requires Python >= 3.11 and numpy 2.x requires >= 3.12, so the
+# runtime is Python 3.12. See the Dockerfile.
+scikit-learn==1.9.0
+numpy==2.5.2
+scipy==1.18.0
+joblib==1.5.3
+pandas==2.3.3
+
 fastapi
 uvicorn
 celery
@@ -6,9 +18,6 @@ supabase
 google-cloud-vision
 python-dotenv
 openai
-joblib
-pandas
-scikit-learn==1.2.2
 pydantic
 python-multipart
 eventlet

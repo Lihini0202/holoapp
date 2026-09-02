@@ -1,5 +1,5 @@
-# Use Python 3.10
-FROM python:3.10-slim
+# Python 3.12: the deployed model was trained on numpy 2.x, which requires it
+FROM python:3.12-slim
 
 # Set working directory
 WORKDIR /app
