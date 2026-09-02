@@ -13,7 +13,6 @@ the prediction to be checked against reality.
 | | |
 |---|---|
 | Web client | https://15b0f731-363d-4b49-a74d-05969b52439e.e1-us-east-azure.choreoapps.dev |
-| API | https://8d61064b-5139-4e13-b173-788bfc44c9ad-dev.e1-us-east-azure.choreoapis.dev/fyp/backend/v1.0 |
 
 ---
 
@@ -299,19 +298,3 @@ backend/check_policies.sql          verification, not a migration
 Storage policies are created through the Supabase dashboard rather than SQL; the SQL
 editor cannot create policies on `storage.objects` in every project.
 
----
-
-## Known limitations
-
-**The screenshot path is unverified.** Scoring has been tested on pasted transcripts
-with `Name:` prefixes. Google Cloud Vision returns its own layout, and if the speaker
-splitter cannot separate the parties it falls back to the previous heuristic
-silently. Check that a response reports `scorer: chat_model_v1`.
-
-**No real outcomes yet.** Accuracy against genuine conversations is unmeasured. The
-0.9154 figure is held-out performance on survey responses, which describe
-conversations rather than being them.
-
-**The scores are descriptive, not predictive.** The signals describe how a
-conversation is going, drawn from responses written after the outcome was known. The
-application reports how a conversation currently reads, not what will happen to it.
