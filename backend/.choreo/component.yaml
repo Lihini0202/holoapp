@@ -1,12 +1,12 @@
-# Choreo component descriptor, schema 1.1. The port lives under `service`; the
-# flat `port` field of schema 1.0 is no longer accepted.
-schemaVersion: 1.1
+# Choreo component descriptor. The version is quoted: unquoted, YAML would read
+# 1.2 as a float and the value would not match the expected schema string.
+schemaVersion: "1.2"
 endpoints:
-  - name: holo-api
-    displayName: Holo Analysis API
-    service:
-      basePath: /
-      port: 8000
-    type: REST
-    networkVisibilities:
-      - Public
+    - name: holo-api
+      displayName: Holo Analysis API
+      service:
+        basePath: /
+        port: 8000
+      type: REST
+      networkVisibilities:
+        - Public
