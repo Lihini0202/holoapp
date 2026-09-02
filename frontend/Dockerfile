@@ -42,13 +42,20 @@ FROM nginx:1.29-alpine
 RUN apk upgrade --no-cache
 
 COPY --from=build /app/build/web /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Choreo requires a non-root user with a UID between 10000 and 20000. nginx needs
-# write access to its cache and pid paths, so those are reassigned to that user.
+# Replaces the stock configuration rather than dropping a snippet into conf.d, so
+# that the http-level temp paths can be redirected to /tmp. Choreo mounts the root
+# filesystem read-only and nginx will not start if it cannot create them.
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Choreo requires a non-root user with a UID between 10000 and 20000. The temp
+# directories are created here so nginx does not have to at startup, and /tmp is
+# left world-writable for the pid file and any runtime scratch.
 RUN adduser -D -u 10014 choreo \
-    && chown -R 10014:10014 /usr/share/nginx/html /var/cache/nginx /var/log/nginx \
-    && touch /run/nginx.pid && chown 10014:10014 /run/nginx.pid
+    && mkdir -p /tmp/client_temp /tmp/proxy_temp /tmp/fastcgi_temp \
+                /tmp/uwsgi_temp /tmp/scgi_temp \
+    && chown -R 10014:10014 /usr/share/nginx/html /tmp \
+    && chmod 1777 /tmp
 
 USER 10014
 EXPOSE 8080
