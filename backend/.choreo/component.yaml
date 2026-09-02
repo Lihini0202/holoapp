@@ -1,5 +1,5 @@
 # Choreo component descriptor. The version is quoted: unquoted, YAML would read
-# 1.2 as a float and the value would not match the expected schema string.
+
 schemaVersion: "1.2"
 endpoints:
     - name: holo-api
