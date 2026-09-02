@@ -1,5 +1,9 @@
 # Choreo component descriptor. nginx serves the built Flutter bundle on 8080;
 # Choreo disallows binding privileged ports as a non-root user.
+#
+# The type is REST because the schema accepts only REST, GraphQL, GRPC, TCP, UDP
+# or WS. A static site is none of these strictly, but REST is the entry that
+# describes plain HTTP traffic.
 schemaVersion: "1.2"
 endpoints:
     - name: holo-web
@@ -7,6 +11,6 @@ endpoints:
       service:
         basePath: /
         port: 8080
-      type: HTTP
+      type: REST
       networkVisibilities:
         - Public
