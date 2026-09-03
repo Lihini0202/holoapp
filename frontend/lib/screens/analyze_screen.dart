@@ -48,6 +48,7 @@ class _AnalyzeScreenState extends State<AnalyzeScreen> with TickerProviderStateM
   String resultStatus = "Ready";
   String riskScore = "";
   String debugInfo = "";
+  String errorMessage = "";
   String historyAlert = "";
   bool isLoading = false;
   double rawRisk = 0.0;
@@ -177,7 +178,7 @@ class _AnalyzeScreenState extends State<AnalyzeScreen> with TickerProviderStateM
 
   void _startLoading() {
     setState(() {
-      isLoading = true; resultStatus = "Starting..."; debugInfo = ""; historyAlert = ""; riskScore = "";
+      isLoading = true; resultStatus = "Starting..."; debugInfo = ""; historyAlert = ""; riskScore = ""; errorMessage = "";
     });
   }
 
@@ -205,7 +206,30 @@ class _AnalyzeScreenState extends State<AnalyzeScreen> with TickerProviderStateM
         var data = jsonDecode(response.body);
         if (data['status'] == 'Completed') {
           finished = true;
-          var result = data['result']; 
+          var result = data['result'];
+
+          // The task catches its own exceptions and returns {"error": ...}, so
+          // Celery still reports it as completed. Without this check a failed
+          // OCR fell through to the success path, where a missing risk_score
+          // defaulted to 0.0 and was shown as a confident LOW on a conversation
+          // nothing had been read from.
+          final taskError = (result is Map) ? result['error'] : null;
+          if (taskError != null) {
+            if (mounted) {
+              setState(() {
+                isLoading = false;
+                riskScore = "";
+                rawRisk = 0.0;
+                historyAlert = "";
+                debugInfo = "";
+                resultStatus = "Couldn't read that chat";
+                errorMessage = _readableError(taskError.toString());
+              });
+            }
+            attempts++;
+            continue;
+          }
+
           var extracted = result['extracted_data'] ?? {};
           if (mounted) {
             setState(() {
@@ -247,6 +271,21 @@ class _AnalyzeScreenState extends State<AnalyzeScreen> with TickerProviderStateM
       attempts++;
     }
     if (!finished && mounted) setState(() { isLoading = false; resultStatus = "Timeout"; debugInfo = "Server took too long."; });
+  }
+
+  /// Turns a backend failure into something the user can act on. The raw text
+  /// is a client-library message and means nothing to them.
+  String _readableError(String raw) {
+    if (raw.contains('default credentials') || raw.contains('DefaultCredentials')) {
+      return "Screenshot reading is unavailable at the moment.\n\n"
+             "Use Paste Text instead — it reads the conversation more "
+             "accurately anyway.";
+    }
+    if (raw.contains('No text found')) {
+      return "No text could be read from that image.\n\n"
+             "Try a sharper screenshot, or use Paste Text.";
+    }
+    return "That analysis could not be completed.\n\n$raw";
   }
 
   void _handleError(Object e) { if (mounted) setState(() { resultStatus = "Failed"; debugInfo = "$e"; isLoading = false; }); }
@@ -460,6 +499,25 @@ class _AnalyzeScreenState extends State<AnalyzeScreen> with TickerProviderStateM
                     // RESULTS DISPLAY
                     if (isLoading)
                        CircularProgressIndicator(color: colPinkDeep)
+                    else if (errorMessage.isNotEmpty)
+                      _buildLightGlassCard(
+                        child: Column(
+                          children: [
+                            const Icon(Icons.image_not_supported_outlined,
+                                size: 42, color: Colors.orange),
+                            const SizedBox(height: 12),
+                            Text(resultStatus,
+                                style: GoogleFonts.poppins(
+                                    fontSize: 18, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 10),
+                            Text(errorMessage,
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.poppins(
+                                    fontSize: 13,
+                                    color: colTextMain.withValues(alpha: 0.75))),
+                          ],
+                        ),
+                      )
                     else if (riskScore.isNotEmpty)
                       _buildLightGlassCard(
                         child: Column(
