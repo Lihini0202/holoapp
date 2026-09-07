@@ -1,8 +1,10 @@
 from celery import Celery
 from google.cloud import vision
+from google.oauth2 import service_account
 from supabase import create_client, Client
 from dotenv import load_dotenv
 import joblib
+import json
 import pandas as pd
 import re
 import os
@@ -11,6 +13,32 @@ import ssl
 
 # --- Configuration -----------------------------------------------------------
 load_dotenv()
+
+# Cloud Vision credentials.
+#
+# The client library resolves credentials from GOOGLE_APPLICATION_CREDENTIALS,
+# which must be a path to a key file. That works locally, where the key sits
+# beside this module, but the key is git-ignored and so is absent from the
+# container image; on a managed platform it has to be mounted before the path
+# means anything.
+#
+# GOOGLE_CREDENTIALS_JSON avoids that: it holds the key material itself, which a
+# platform can supply as an ordinary secret with no file to mount and no path to
+# get wrong. It takes precedence when set, and the file-based path still works
+# unchanged when it is not.
+vision_credentials = None
+_creds_json = os.getenv("GOOGLE_CREDENTIALS_JSON")
+if _creds_json:
+    try:
+        vision_credentials = service_account.Credentials.from_service_account_info(
+            json.loads(_creds_json))
+        print("Vision credentials loaded from GOOGLE_CREDENTIALS_JSON")
+    except Exception as e:
+        print(f"GOOGLE_CREDENTIALS_JSON is set but could not be read: {e}")
+elif os.getenv("GOOGLE_APPLICATION_CREDENTIALS"):
+    print("Vision will use the key file at GOOGLE_APPLICATION_CREDENTIALS")
+else:
+    print("No Vision credentials configured - screenshot analysis will fail")
 
 # REDIS URL from environment
 redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
@@ -378,7 +406,8 @@ def analyze_text_task(chat_text, partner_name, age="0", location="unknown", user
 def analyze_screenshot_task(image_content, partner_name, age="0", location="unknown", user_id=None):
     print(f"Processing Screenshot for {partner_name}...")
     try:
-        client = vision.ImageAnnotatorClient()
+        client = (vision.ImageAnnotatorClient(credentials=vision_credentials)
+                  if vision_credentials else vision.ImageAnnotatorClient())
         image = vision.Image(content=image_content)
         response = client.text_detection(image=image)
         
