@@ -149,8 +149,10 @@ Every analysis is stored with <code>actual_outcome</code> unset. After two weeks
 <code>request_outcomes_task</code> sends a notification asking what happened, and the user
 answers Yes, No or <b>Not sure</b> on the Validate Predictions screen.
 
-"Not sure" records no label and stops further requests. A guessed label is worse than a
-missing one because it trains the model on incorrect data.
+Yes and No are stored in <code>actual_outcome</code>. Not sure sets
+<code>outcome_skipped</code> instead: the analysis counts as answered, leaves the Validate
+Predictions queue and is never requested again, and no label is recorded, so an uncertain
+guess never becomes training data.
 
 Each analysis stores both the model score and the score of the previous heuristic, so the
 two can be compared on real outcomes once enough have been collected.
@@ -311,8 +313,13 @@ user data:
 ```
 backend/migrations_user_profiles.sql
 backend/migrations_avatars.sql
+backend/migrations_outcome_skipped.sql
 backend/check_policies.sql          verification query, not a migration
 ```
 
 Storage policies are created in the Supabase dashboard rather than in SQL, because the SQL
 editor cannot create policies on <code>storage.objects</code> in every project.
+
+## License
+
+Released under the MIT License. See <a href="LICENSE">LICENSE</a>.
